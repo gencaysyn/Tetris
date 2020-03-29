@@ -11,8 +11,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -38,8 +41,8 @@ public class Main extends Application {
 	// Main components
 	private Group root;
 	private ObservableList<Node> list;
-	private Pane outerPane;
-	private Pane innerPane;
+	@FXML
+	private Pane game_board_pane;
 	
 	// Game management variables
 	private Game game;
@@ -56,10 +59,9 @@ public class Main extends Application {
 	private Label levelLabel;
 	private Label lineLabel;
 	private Label selectLevelTextLabel;
-	private Label instructorLabel;
-	private Button restartButton;
-	private Button pauseButton;
-	private Button startButton;
+	private Button restartBtn;
+	private Button pauseBtn;
+	private Button startBtn;
 	private ChoiceBox<String> levelSelector;
 	private int selectedLevel;
 	private SoundManager soundManager;
@@ -70,42 +72,15 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			root = new Group();
-			list = root.getChildren();
-			list.add(buildBoard());
-			soundManager = new SoundManager();
-			soundManager.autoPlay("menu");
-			soundManager.play("start");
-			configureTextLabels();
-			configureButtons();
-			list.addAll(lineLabel,selectLevelTextLabel,levelSelector,instructorLabel);
-			list.addAll(levelLabel,startButton,pauseButton,scoreLabel,restartButton);
-			list.addAll(gameOverLabel, overScoreLabel);
-			keyControl = new EventHandler<KeyEvent>() {
-				@Override
-				public void handle(KeyEvent e) {
-					if (!isPaused &&!tetrimino.isDropped) {
-						if (e.getCode() == KeyCode.RIGHT) {
-							tetrimino.moveRight();
-						} else if (e.getCode() == KeyCode.LEFT) {
-							tetrimino.moveLeft();
-						} else if (e.getCode() == KeyCode.UP) {
-							tetrimino.rotateRight();
-						} else if (e.getCode() == KeyCode.DOWN) {
-							if(!isMoveDown() && !tetrimino.isDropped) {
-								dropTetrimino();
-								checkLines();
-							}
-						} else if (e.getCode() == KeyCode.Z) {
-							tetrimino.rotateLeft();
-						}
-						
-					}
-				}
-			};
-
-			Scene scene = new Scene(root, Config.WINDOW_PANE_WIDTH, Config.WINDOW_PANE_HEIGHT);
-			scene.addEventHandler(KeyEvent.KEY_PRESSED, keyControl);
+			//Parent kok = FXMLLoader.load(getClass().getResource("Applicaiton.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(getClass().getResource("Applicaiton.fxml"));
+	        Parent kok = loader.load();
+//			soundManager = new SoundManager();
+//			soundManager.autoPlay("menu");
+//			soundManager.play("start");
+			
+			Scene scene = new Scene(kok);
 			
 			primaryStage.setTitle("Tetris");
 			primaryStage.setScene(scene);
@@ -116,8 +91,6 @@ public class Main extends Application {
 				Platform.exit();
 				System.exit(0);
 				});
-			
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,7 +136,7 @@ public class Main extends Application {
 	// Creates tetromito and adds to GUI
 	public synchronized void addTetrimino() {
 		tetrimino = game.createTetromino();
-		innerPane.getChildren().addAll(tetrimino.getAllRectangles());
+		game_board_pane.getChildren().addAll(tetrimino.getAllRectangles());
 	}
 	
 	private void dropTetrimino() {
@@ -180,7 +153,7 @@ public class Main extends Application {
 		taskRunningCleaner = true; 
 		for (Integer row : fullLines) {
 			for (int j = 0; j < Config.COLUMN; j++) { 
-				innerPane.getChildren().remove(board[row][j]);
+				game_board_pane.getChildren().remove(board[row][j]);
 				board[row][j] = null;
 	    	}
 			for (int i = row; i > 0; i--) {
@@ -237,12 +210,12 @@ public class Main extends Application {
 	}
 	
 	public void resetBoard() {
-		innerPane.getChildren().removeAll(tetrimino.getAllRectangles()); // the last tetromino that did not add to board
+		game_board_pane.getChildren().removeAll(tetrimino.getAllRectangles()); // the last tetromino that did not add to board
 		                                                                 // info: this matrix not for displaying components, just for way too easy reach
 		for (int i = 0; i < Config.ROW; i++) {
 			for (int j = 0; j < Config.COLUMN; j++) {
 				if (board[i][j] != null) {
-					innerPane.getChildren().remove(board[i][j]);
+					game_board_pane.getChildren().remove(board[i][j]);
 					board[i][j] = null;
 				}
 			}
@@ -256,23 +229,23 @@ public class Main extends Application {
 		//soundManager.playAfterThis("gameOver", "inGame");
 		soundManager.play("gameOver");
 		
-		pauseButton.setDisable(true);;
+		pauseBtn.setDisable(true);;
 		gameOverLabel.setVisible(true);
 		overScoreLabel.setVisible(true);
 		overScoreLabel.setText("Score :"+game.getScore());
-		restartButton.setVisible(true);
-		outerPane.setOpacity(0.5);
+		restartBtn.setVisible(true);
+		//outerPane.setOpacity(0.5);
 	}
 	
 	public synchronized void startGame() {
 		// GUI configurations //////////////
-		outerPane.setOpacity(1);
+		//outerPane.setOpacity(1);
 		selectLevelTextLabel.setVisible(false);
 		levelSelector.setVisible(false);
 		gameOverLabel.setVisible(false);
 		overScoreLabel.setVisible(false);
-		startButton.setDisable(true);
-		pauseButton.setDisable(false);
+		startBtn.setDisable(true);
+		pauseBtn.setDisable(false);
 		soundManager.stop("menu");
 		soundManager.stop("gameOver");
 		soundManager.stop("start");
@@ -293,8 +266,8 @@ public class Main extends Application {
 		// GUI configurations //////////////
 		gameOverLabel.setVisible(false);
 		overScoreLabel.setVisible(false);
-		restartButton.setVisible(false);
-		outerPane.setOpacity(1);
+		restartBtn.setVisible(false);
+		//outerPane.setOpacity(1);
 		soundManager.stop("gameOver");
 		soundManager.autoPlayAfterThis("restart", "inGame");
 		//////////////////////////////////////
@@ -344,46 +317,46 @@ public class Main extends Application {
 	}
 	
 	// Mesh board builder
-	private Pane buildBoard() {
-		innerPane = new Pane();
-		innerPane.setLayoutX(Config.INNER_PANE_ALIGNMENT_X);
-		innerPane.setLayoutY(Config.INNER_PANE_ALIGNMENT_Y);
-
-		for (int i = 0; i <= Config.ROW; i++) {
-			if (i <= Config.COLUMN) {
-				innerPane.getChildren().add(new Line(i * Config.RECTANGLE_EDGE, 0, i * Config.RECTANGLE_EDGE, Config.INNER_PANE_HEIGHT));
-			}
-			innerPane.getChildren().add(new Line(0, i * Config.RECTANGLE_EDGE, Config.INNER_PANE_WIDTH, i * Config.RECTANGLE_EDGE));
-		}
-
-		outerPane = new Pane();
-		outerPane.setLayoutX(Config.OUTER_PANE_ALIGNMENT_X);
-		outerPane.setLayoutY(Config.OUTER_PANE_ALIGNMENT_Y);
-		outerPane.setBorder(new Border(
-		new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
-		outerPane.minHeight(650);
-		outerPane.minWidth(650);
-		outerPane.getChildren().add(innerPane);
-
-		return outerPane;
-
-	}
+//	private Pane buildBoard() {
+//		game_board_pane = new Pane();
+//		game_board_pane.setLayoutX(Config.INNER_PANE_ALIGNMENT_X);
+//		game_board_pane.setLayoutY(Config.INNER_PANE_ALIGNMENT_Y);
+//
+//		for (int i = 0; i <= Config.ROW; i++) {
+//			if (i <= Config.COLUMN) {
+//				game_board_pane.getChildren().add(new Line(i * Config.RECTANGLE_EDGE, 0, i * Config.RECTANGLE_EDGE, Config.INNER_PANE_HEIGHT));
+//			}
+//			game_board_pane.getChildren().add(new Line(0, i * Config.RECTANGLE_EDGE, Config.INNER_PANE_WIDTH, i * Config.RECTANGLE_EDGE));
+//		}
+//
+//		outerPane = new Pane();
+//		outerPane.setLayoutX(Config.OUTER_PANE_ALIGNMENT_X);
+//		outerPane.setLayoutY(Config.OUTER_PANE_ALIGNMENT_Y);
+//		outerPane.setBorder(new Border(
+//		new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
+//		outerPane.minHeight(650);
+//		outerPane.minWidth(650);
+//		outerPane.getChildren().add(game_board_pane);
+//
+//		return outerPane;
+//
+//	}
 	
 	//////////////////// Buttons and Labels Configurations /////////////////////////////
 	public void configureButtons() {
-		startButton = new Button("Start Game");
-		startButton.setTranslateX(400);
-		startButton.setTranslateY(50);
+		startBtn = new Button("Start Game");
+		startBtn.setTranslateX(400);
+		startBtn.setTranslateY(50);
 		
-		pauseButton = new Button("Pause");
-		pauseButton.setTranslateX(400);
-		pauseButton.setTranslateY(100);
-		pauseButton.setDisable(true);
+		pauseBtn = new Button("Pause");
+		pauseBtn.setTranslateX(400);
+		pauseBtn.setTranslateY(100);
+		pauseBtn.setDisable(true);
 		
-		restartButton = new Button("Restart");
-		restartButton.setTranslateX(178);
-		restartButton.setTranslateY(350);
-		restartButton.setVisible(false);
+		restartBtn = new Button("Restart");
+		restartBtn.setTranslateX(178);
+		restartBtn.setTranslateY(350);
+		restartBtn.setVisible(false);
 		
 		levelSelector = new ChoiceBox<String>();
 		levelSelector.getItems().addAll("Level 00","Level 01", "Level 02","Level 03","Level 04","Level 05","Level 06","Level 07","Level 08","Level 09","Level 10");
@@ -403,9 +376,9 @@ public class Main extends Application {
 		selectLevelTextLabel.setStyle("-fx-font-weight: bold");
 		selectLevelTextLabel.setFont(new Font(30));
 		selectLevelTextLabel.setTextAlignment(TextAlignment.CENTER);
-		outerPane.setOpacity(0.5);
+		//outerPane.setOpacity(0.5);
 		
-		startButton.setOnAction(new EventHandler<ActionEvent>() {
+		startBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
@@ -413,7 +386,7 @@ public class Main extends Application {
 			}
 		});
 		
-		restartButton.setOnAction(new EventHandler<ActionEvent>() {
+		restartBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
@@ -422,16 +395,16 @@ public class Main extends Application {
 			}
 		});
 
-		pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+		pauseBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				if (!isPaused) {
 					pause();
-					pauseButton.setText("Resume");
+					pauseBtn.setText("Resume");
 				} else {
 					resume();
-					pauseButton.setText("Pause");
+					pauseBtn.setText("Pause");
 				}
 			}
 		});
@@ -465,9 +438,5 @@ public class Main extends Application {
 		lineLabel.setTranslateX(400);
 		lineLabel.setTranslateY(200);
 		
-		instructorLabel = new Label("Instructor\n Right Arrow Key : Move Right\n Left Arrow Key : Move Left\n Up Arrow Key: Rotate Right \n Down Arrow Key: Soft Drop\n Z : Rotate Left");
-		instructorLabel.setTranslateX(380);
-		instructorLabel.setTranslateY(450);
-		instructorLabel.setTextAlignment(TextAlignment.CENTER);
 	}
 }
