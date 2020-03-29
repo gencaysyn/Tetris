@@ -141,7 +141,6 @@ public class Main extends Application {
 								addTetrimino();
 								if (!game.isAvaible()) {
 									finishGame();
-									pause();
 								}
 								updateGame();
 							}
@@ -252,7 +251,6 @@ public class Main extends Application {
 
 	public synchronized void finishGame() {
 		pause();
-		
 		soundManager.stop("inGame");
 		soundManager.stopAll();
 		//soundManager.playAfterThis("gameOver", "inGame");
@@ -272,30 +270,42 @@ public class Main extends Application {
 		selectLevelTextLabel.setVisible(false);
 		levelSelector.setVisible(false);
 		gameOverLabel.setVisible(false);
-		restartButton.setVisible(false);
 		overScoreLabel.setVisible(false);
 		startButton.setDisable(true);
 		pauseButton.setDisable(false);
-		
 		soundManager.stop("menu");
 		soundManager.stop("gameOver");
 		soundManager.stop("start");
 		soundManager.autoPlay("inGame");
 		//soundManager.mute("inGame");
 		//////////////////////////////////////
-		
 		game = new Game(tetrimino); 
 		game.setLevel(selectedLevel); // set level that selected from choice box
 		levelLabel.setText("level "+ selectedLevel); // initial level text
-		addTetrimino(); // adds tetromino to GUI
-		// Move down thread configuration
-		
-		fall = new Timer(); 
+		addTetrimino(); // adds tetrimino to GUI
+		fall = new Timer(); // Move down thread configuration
 		task = createNewTask();
 		fall.schedule(task, Config.STARTING_DELAY, Config.DELAYS[game.getLevel()]);
 		isPaused = false;
-		
-		
+	}
+	
+	public void restartGame() {
+		// GUI configurations //////////////
+		gameOverLabel.setVisible(false);
+		overScoreLabel.setVisible(false);
+		restartButton.setVisible(false);
+		outerPane.setOpacity(1);
+		soundManager.stop("gameOver");
+		soundManager.autoPlayAfterThis("restart", "inGame");
+		//////////////////////////////////////
+		game = new Game(tetrimino); 
+		game.setLevel(selectedLevel); // set level that selected from choice box
+		levelLabel.setText("level "+ selectedLevel); // initial level text
+		addTetrimino(); // adds tetrimino to GUI
+		fall = new Timer(); // Move down thread configuration
+		task = createNewTask();
+		fall.schedule(task, Config.STARTING_DELAY, Config.DELAYS[game.getLevel()]);
+		isPaused = false;
 	}
 	
 	// deletes all rectangles from board and deletes game object
@@ -324,10 +334,13 @@ public class Main extends Application {
 		if(game.isPanic()) {
 			soundManager.play("panic");
 		}
-		game.update();
-		scoreLabel.setText("Score: "+game.getScore());
-		levelLabel.setText("Level "+game.getLevel());
-		lineLabel.setText("Line "+game.getLineCounter());
+		if(game.update()) {
+			scoreLabel.setText("Score: "+game.getScore());
+			levelLabel.setText("Level "+game.getLevel());
+			lineLabel.setText("Line "+game.getLineCounter());
+			pause();
+			resume();
+		}
 	}
 	
 	// Mesh board builder
@@ -404,9 +417,8 @@ public class Main extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				soundManager.autoPlayAfterThis("restart", "inGame");
 				resetGame();
-				startGame();
+				restartGame();
 			}
 		});
 

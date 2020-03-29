@@ -49,6 +49,7 @@ public class SoundManager {
 		
 		public void play() {
 			mediaPlayer.stop();
+			mediaPlayer.seek(Duration.ZERO);
 			mediaPlayer.play();
 		}
 		
@@ -123,6 +124,20 @@ public class SoundManager {
 			sound.pause();
 		}
 	}
+	
+	public void pause(String name) {
+		medias.get(name).pause();
+	}
+	
+	public void playAll() {
+		Iterator<Entry<String, Sound>> it = medias.entrySet().iterator();	
+		while(it.hasNext()) {
+			Entry<String, Sound> pair = it.next();
+			Sound sound = (Sound) pair.getValue();
+			sound.play();
+		}
+	}
+	
 }
 
 
