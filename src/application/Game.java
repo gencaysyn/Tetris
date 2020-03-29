@@ -29,11 +29,13 @@ public class Game {
 		score += (level + 1) * Config.SCORES[lineAmount - 1];
 	}
 
-	public void update() {
+	public boolean update() {
 		if (lineCounter/Config.LINE_PER_LEVEL >levelConfig) {
 			level++;
 			levelConfig++;
+			return true;
 		}
+		return false;
 	}
 
 	public int getLevel() {

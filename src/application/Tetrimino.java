@@ -231,7 +231,6 @@ public abstract class Tetrimino extends Rectangle {
 	
 	public void setImage(String fileName) {
 		String path = "/images/";
-		
 		Image image;
 		try {
 			image = new Image(Main.class.getResource(path+fileName).toURI().toString(),30,30,false,true);
@@ -241,7 +240,6 @@ public abstract class Tetrimino extends Rectangle {
 			C.setFill(imgPat);
 			D.setFill(imgPat);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
