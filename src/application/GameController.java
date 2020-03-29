@@ -34,8 +34,13 @@ public class GameController {
 	// Main components
 		private Group root;
 		private ObservableList<Node> list;
+		
 		@FXML
 		private Pane game_board_pane;
+		@FXML
+		private Pane next_tetrimino_pane;
+
+		
 		
 		// Game management variables
 		private Game game;
@@ -45,8 +50,10 @@ public class GameController {
 		private TimerTask task;
 		private boolean isPaused = true; // to manage pause button
 		
-		// Label and button Components
+		// javafx components
+		@FXML
 		private Label gameOverLabel;
+		@FXML
 		private Label overScoreLabel;
 		@FXML
 		private Label scoreLabel;
@@ -93,8 +100,22 @@ public class GameController {
 		public void startBtn(ActionEvent e) {
 			startGame();
 		}
-		public void createKeyController() {
-
+		
+		@FXML
+		public void pauseBtn(ActionEvent e) {
+			if (!isPaused) {
+				pause();
+				pauseBtn.setText("Resume");
+			} else {
+				resume();
+				pauseBtn.setText("Pause");
+			}
+		}
+		
+		@FXML
+		public void restartBtn(ActionEvent e) {
+			resetGame();
+			restartGame();
 		}
 		
 		// The Main game thread

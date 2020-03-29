@@ -15,8 +15,21 @@
             <Image url="@../../res/images/background.PNG" />
          </image>
       </ImageView>
-      <Pane id="game_board_pane" fx:id="game_board_pane" layoutX="150.0" layoutY="90.0" prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: black;" />
-      <Pane id="next_tetrimino_pane" layoutX="480.0" layoutY="210.0" prefHeight="120.0" prefWidth="90.0" style="-fx-background-color: black;" />
+      <Pane id="game_board_pane" fx:id="game_board_pane" layoutX="150.0" layoutY="90.0" prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: black;">
+         <children>
+            <Label id="gameOverLabel" fx:id="gameOverLabel" layoutY="150.0" prefHeight="100.0" prefWidth="300.0" style="-fx-alignment: center;" text="Game Over" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font size="50.0" />
+               </font>
+            </Label>
+            <Label id="overScoreLabel" fx:id="overScoreLabel" layoutY="225.0" prefHeight="100.0" prefWidth="300.0" style="-fx-alignment: center;" text="Score: 999999" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Button id="startBtn" fx:id="restartBtn" layoutX="106.0" layoutY="341.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="88.0" text="Restart" />
+         </children></Pane>
+      <Pane id="next_tetrimino_pane" fx:id="next_tetrimino_pane" layoutX="480.0" layoutY="210.0" prefHeight="120.0" prefWidth="90.0" style="-fx-background-color: black;" />
       <Label fx:id="levelLabel" layoutX="180.0" layoutY="30.0" prefHeight="30.0" prefWidth="120.0" style="-fx-alignment: center; -fx-background-color: black;" text="Level" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -27,9 +40,9 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Button id="pauseBtn" fx:id="pauseBtn" layoutX="480.0" layoutY="90.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Pause" />
-      <Button id="backBtn" layoutX="480.0" layoutY="660.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Back" />
-      <Button id="startBtn" fx:id="startBtn" layoutX="480.0" layoutY="450.0" mnemonicParsing="false" onAction="#startBtn" prefHeight="30.0" prefWidth="90.0" text="Start" />
+      <Button id="pauseBtn" fx:id="pauseBtn" layoutX="481.0" layoutY="91.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="88.0" text="Pause" />
+      <Button id="backBtn" layoutX="480.0" layoutY="661.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="88.0" text="Back" />
+      <Button id="startBtn" fx:id="startBtn" layoutX="480.0" layoutY="451.0" mnemonicParsing="false" onAction="#startBtn" prefHeight="27.0" prefWidth="88.0" text="Start" />
       <Label layoutX="480.0" layoutY="150.0" prefHeight="30.0" prefWidth="90.0" style="-fx-alignment: center; -fx-background-color: black;" text="Next" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />

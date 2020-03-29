@@ -110,7 +110,6 @@ public class Main extends Application {
 									dropTetrimino();
 									checkLines();
 								}
-									
 								addTetrimino();
 								if (!game.isAvaible()) {
 									finishGame();
@@ -119,6 +118,7 @@ public class Main extends Application {
 							}
 							taskRunning = false;
 						}else {
+							System.out.println("Other Game loop running");
 						}
 						
 					}
@@ -184,7 +184,7 @@ public class Main extends Application {
 		}
 	}
 
-	// Checks if move down current tetromino
+	// Checks if move down current tetrimino
 	// if it can returns true, otherwise return false and drops it
 	public synchronized boolean isMoveDown() {
 		if (!tetrimino.moveDown()) {
@@ -286,12 +286,6 @@ public class Main extends Application {
 		scoreLabel.setText("Score: 0");
 		resetBoard();
 		game = null;
-		try {
-			finalize();
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public boolean isPaused() {
