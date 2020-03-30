@@ -8,13 +8,14 @@ public class Game {
 
 	protected boolean[][] board = new boolean[Config.ROW][Config.COLUMN];
 	private Tetrimino t;
+	private Tetrimino next;
 	private int score;
 	private int level;
 	private int lineCounter;
 	private int levelConfig;
 	private int lastTetrimino;
 	private boolean panic = false;
-
+	
 	public Game(Tetrimino t) {
 		this.t = t;
 		this.level = 0;
@@ -79,34 +80,47 @@ public class Game {
 
 	public Tetrimino createTetromino() {
 		Random r = new Random();
+		Tetrimino tet = null;
 		int select = r.nextInt(7);
 		while (select == lastTetrimino)
 			select = r.nextInt(7);
 		lastTetrimino = select;
 		switch (select) {
 		case 0:
-			t = new Tet_I(board);
-			return t;
+			tet = new Tet_I(board);
+			break;
 		case 1:
-			t = new Tet_J(board);
-			return t;
+			tet = new Tet_J(board);
+			break;
 		case 2:
-			t = new Tet_L(board);
-			return t;
+			tet = new Tet_L(board);
+			break;
 		case 3:
-			t = new Tet_O(board);
-			return t;
+			tet = new Tet_O(board);
+			break;
 		case 4:
-			t = new Tet_S(board);
-			return t;
+			tet = new Tet_S(board);
+			break;
 		case 5:
-			t = new Tet_T(board);
-			return t;
+			tet = new Tet_T(board);
+			break;
 		case 6:
-			t = new Tet_Z(board);
-			return t;
+			tet = new Tet_Z(board);
+			break;
 		}
-		return null;
+		return tet;
+	}
+	
+	public Tetrimino firstTetrimino() {
+		next = createTetromino();
+		t = createTetromino();
+		return t;
+	}
+	
+	public Tetrimino nextTetrimino() {
+		t = next;
+		next = createTetromino();
+		return t;
 	}
 
 	public ArrayList<Integer> checkLines() {
@@ -156,6 +170,11 @@ public class Game {
 
 	public void setLineCounter(int lineCounter) {
 		this.lineCounter = lineCounter;
+	}
+	
+
+	public Tetrimino getNext() {
+		return next;
 	}
 
 	public void cleanLines(ArrayList<Integer> fullLines) {
