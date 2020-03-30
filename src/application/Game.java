@@ -16,9 +16,9 @@ public class Game {
 	private int lastTetrimino;
 	private boolean panic = false;
 	
-	public Game(Tetrimino t) {
+	public Game(Tetrimino t, int level) {
 		this.t = t;
-		this.level = 0;
+		this.level = level;
 		this.lineCounter = 0;
 		this.score = 0;
 		this.lastTetrimino = -1;

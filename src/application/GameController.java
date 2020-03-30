@@ -59,17 +59,16 @@ public class GameController implements Initializable{
 		private Label levelLabel;
 		@FXML
 		private Label lineLabel;
-		private Label selectLevelTextLabel;
 		@FXML
 		private Button restartBtn;
 		@FXML
 		private Button pauseBtn;
-		private ChoiceBox<String> levelSelector;
 		private int selectedLevel;
 		private SoundManager soundManager = new SoundManager();
 		private boolean taskRunning = false;
 		private boolean taskRunningCleaner = false;
 		
+
 		@FXML
 		public void keyHandler(KeyEvent e) {
 			if (!isPaused &&!tetrimino.isDropped) {
@@ -78,7 +77,6 @@ public class GameController implements Initializable{
 				} else if (e.getCode() == KeyCode.LEFT) {
 					tetrimino.moveLeft();
 				} else if (e.getCode() == KeyCode.UP) {
-					System.out.println("UP");
 					tetrimino.rotateRight();
 				} else if (e.getCode() == KeyCode.DOWN) {
 					if(!moveDown() && !tetrimino.isDropped) {
@@ -89,11 +87,6 @@ public class GameController implements Initializable{
 					tetrimino.rotateLeft();
 				}
 			}
-		}
-
-		@FXML
-		public void startBtnHandler(ActionEvent e) {
-			startGame();
 		}
 		
 		@FXML
@@ -161,7 +154,6 @@ public class GameController implements Initializable{
 		public void showNextTetrimino() {
 			next_tetrimino_pane.getChildren().clear();
 			Tetrimino next = new Tetrimino(game.getNext().instanceLoc);
-			System.out.println(next.toString());
 			next_tetrimino_pane.getChildren().addAll(next.getAllRectangles());
 		}
 		
@@ -266,7 +258,7 @@ public class GameController implements Initializable{
 			restartBtn.setVisible(true);
 		}
 		
-		public synchronized void startGame() {
+		public synchronized void startGame(int selectedLevel) {
 			// GUI configurations //////////////
 			gameOverLabel.setVisible(false);
 			overScoreLabel.setVisible(false);
@@ -278,10 +270,11 @@ public class GameController implements Initializable{
 			soundManager.autoPlay("inGame");
 			//soundManager.mute("inGame");
 			//////////////////////////////////////
-			game = new Game(tetrimino); 
-			selectedLevel = 5;
-			game.setLevel(selectedLevel); // set level that selected from choice box
-			//levelLabel.setText("level "+ selectedLevel); // initial level text
+			System.out.println("noluyo hamuða "+selectedLevel);
+			game = new Game(tetrimino,selectedLevel); // set level that selected from choice box
+			System.out.println("Seçilmiþ sevie"+game.getLevel());
+			levelLabel.setText(""+ selectedLevel); // initial level text
+			scoreLabel.setText("0");
 			addFirstTetrimino();; // adds tetrimino to GUI
 			showNextTetrimino();
 			fall = new Timer(); // Move down thread configuration
@@ -303,8 +296,7 @@ public class GameController implements Initializable{
 			soundManager.stop("gameOver");
 			soundManager.autoPlayAfterThis("restart", "inGame");
 			//////////////////////////////////////
-			game = new Game(tetrimino); 
-			game.setLevel(selectedLevel); // set level that selected from choice box
+			game = new Game(tetrimino,selectedLevel); // set level that selected from choice box
 			levelLabel.setText(""+ selectedLevel); // initial level text
 			addFirstTetrimino(); // adds tetrimino to GUI
 			fall = new Timer(); // Move down thread configuration
@@ -334,7 +326,6 @@ public class GameController implements Initializable{
 				soundManager.play("panic");
 			}
 			if(game.update()) {
-				System.out.println("asdas"+game.getLevel());
 				scoreLabel.setText(""+game.getScore());
 				levelLabel.setText(""+game.getLevel());
 				lineLabel.setText(""+game.getLineCounter());
@@ -342,10 +333,15 @@ public class GameController implements Initializable{
 				resume();
 			}
 		}
-
-		@Override
+		
+		public void selectLevel(int level) {
+			System.out.println("ananan "+level);
+			selectedLevel = level;
+		}
+		
+		@Override 
 		public void initialize(URL location, ResourceBundle resources) {
-			startGame();
+			
 		}
 			
 }

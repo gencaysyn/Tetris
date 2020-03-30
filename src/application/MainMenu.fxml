@@ -23,6 +23,6 @@
       <Button fx:id="mainStartBtn" layoutX="240.0" layoutY="330.0" mnemonicParsing="false" onAction="#mainStartBtnHandler" prefHeight="30.0" prefWidth="120.0" text="Start" />
       <Button layoutX="240.0" layoutY="390.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="High Scores" />
       <Button fx:id="quitBtn" layoutX="240.0" layoutY="450.0" mnemonicParsing="false" onAction="#quitBtnHandler" prefHeight="30.0" prefWidth="120.0" text="Quit" />
-      <ChoiceBox layoutX="225.0" layoutY="240.0" prefHeight="30.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="levelSelector" layoutX="225.0" layoutY="240.0" prefHeight="30.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
