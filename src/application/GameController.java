@@ -36,17 +36,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameController implements Initializable{
-	// Main components
-		private Group root;
-		private ObservableList<Node> list;
-		
-		@FXML
-		private Pane game_board_pane;
-		@FXML
-		private Pane next_tetrimino_pane;
-
-		
-		
 		// Game management variables
 		private Game game;
 		private Tetrimino tetrimino;
@@ -56,6 +45,10 @@ public class GameController implements Initializable{
 		private boolean isPaused = true; // to manage pause button
 		
 		// javafx components
+		@FXML
+		private Pane game_board_pane;
+		@FXML
+		private Pane next_tetrimino_pane;
 		@FXML
 		private Label gameOverLabel;
 		@FXML
@@ -71,8 +64,6 @@ public class GameController implements Initializable{
 		private Button restartBtn;
 		@FXML
 		private Button pauseBtn;
-		@FXML
-		private Button startBtn;
 		private ChoiceBox<String> levelSelector;
 		private int selectedLevel;
 		private SoundManager soundManager = new SoundManager();
@@ -108,9 +99,11 @@ public class GameController implements Initializable{
 		@FXML
 		public void pauseBtnHandler(ActionEvent e) {
 			if (!isPaused) {
+				soundManager.pause("inGame");
 				pause();
 				pauseBtn.setText("Resume");
 			} else {
+				soundManager.play("inGame");
 				resume();
 				pauseBtn.setText("Pause");
 			}
@@ -135,8 +128,8 @@ public class GameController implements Initializable{
 										dropTetrimino();
 										checkLines();
 									}
-										
-									addTetrimino();
+									addNextTetrimino();
+									showNextTetrimino();
 									if (!game.isAvaible()) {
 										finishGame();
 									}
@@ -155,10 +148,21 @@ public class GameController implements Initializable{
 		}
 
 		// Creates tetrimino and adds to GUI
-		public synchronized void addTetrimino() {
-			System.out.println("add Tetrimino");
-			tetrimino = game.createTetromino();
+		public synchronized void addFirstTetrimino() {
+			tetrimino = game.firstTetrimino();
 			game_board_pane.getChildren().addAll(tetrimino.getAllRectangles());
+		}
+		
+		public synchronized void addNextTetrimino() {
+			tetrimino = game.nextTetrimino();
+			game_board_pane.getChildren().addAll(tetrimino.getAllRectangles());
+		}
+		
+		public void showNextTetrimino() {
+			next_tetrimino_pane.getChildren().clear();
+			Tetrimino next = new Tetrimino(game.getNext().instanceLoc);
+			System.out.println(next.toString());
+			next_tetrimino_pane.getChildren().addAll(next.getAllRectangles());
 		}
 		
 		private void dropTetrimino() {
@@ -246,23 +250,26 @@ public class GameController implements Initializable{
 			//soundManager.playAfterThis("gameOver", "inGame");
 			soundManager.play("gameOver");
 			gameOverLabel.setVisible(true);
-			FadeTransition ft = new FadeTransition(Duration.millis(2000), gameOverLabel);
+			FadeTransition ft = new FadeTransition(Duration.millis(1000), gameOverLabel);
 			ft.setFromValue(0);
 			ft.setToValue(1);
 			ft.play();
+			
+			FadeTransition gameBoardAnim = new FadeTransition(Duration.millis(1000), game_board_pane);
+			gameBoardAnim.setFromValue(1);
+			gameBoardAnim.setToValue(0.5);
+			gameBoardAnim.play();
 			pauseBtn.setDisable(true);
 			
 			overScoreLabel.setVisible(true);
 			overScoreLabel.setText(""+game.getScore());
 			restartBtn.setVisible(true);
-			game_board_pane.setOpacity(0.5);
 		}
 		
 		public synchronized void startGame() {
 			// GUI configurations //////////////
 			gameOverLabel.setVisible(false);
 			overScoreLabel.setVisible(false);
-			startBtn.setDisable(true);
 			pauseBtn.setDisable(false);
 			restartBtn.setVisible(false);
 			soundManager.stop("menu");
@@ -275,7 +282,8 @@ public class GameController implements Initializable{
 			selectedLevel = 5;
 			game.setLevel(selectedLevel); // set level that selected from choice box
 			//levelLabel.setText("level "+ selectedLevel); // initial level text
-			addTetrimino(); // adds tetrimino to GUI
+			addFirstTetrimino();; // adds tetrimino to GUI
+			showNextTetrimino();
 			fall = new Timer(); // Move down thread configuration
 			task = createGameLoop();
 			fall.schedule(task, Config.STARTING_DELAY, Config.DELAYS[game.getLevel()]);
@@ -284,17 +292,21 @@ public class GameController implements Initializable{
 		
 		public void restartGame() {
 			// GUI configurations //////////////
+			pauseBtn.setDisable(false);
 			gameOverLabel.setVisible(false);
 			overScoreLabel.setVisible(false);
 			restartBtn.setVisible(false);
-			game_board_pane.setOpacity(1);
+			FadeTransition gameBoardAnim = new FadeTransition(Duration.millis(1000), game_board_pane);
+			gameBoardAnim.setFromValue(0.5);
+			gameBoardAnim.setToValue(1);
+			gameBoardAnim.play();
 			soundManager.stop("gameOver");
 			soundManager.autoPlayAfterThis("restart", "inGame");
 			//////////////////////////////////////
 			game = new Game(tetrimino); 
 			game.setLevel(selectedLevel); // set level that selected from choice box
 			levelLabel.setText(""+ selectedLevel); // initial level text
-			addTetrimino(); // adds tetrimino to GUI
+			addFirstTetrimino(); // adds tetrimino to GUI
 			fall = new Timer(); // Move down thread configuration
 			task = createGameLoop();
 			fall.schedule(task, Config.STARTING_DELAY, Config.DELAYS[game.getLevel()]);
@@ -333,7 +345,6 @@ public class GameController implements Initializable{
 
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
-			// TODO Auto-generated method stub
 			startGame();
 		}
 			

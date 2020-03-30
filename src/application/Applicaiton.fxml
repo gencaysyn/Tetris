@@ -28,7 +28,6 @@
       </Label>
       <Button id="pauseBtn" fx:id="pauseBtn" layoutX="481.0" layoutY="91.0" mnemonicParsing="false" onAction="#pauseBtnHandler" prefHeight="27.0" prefWidth="88.0" text="Pause" />
       <Button id="backBtn" layoutX="480.0" layoutY="661.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="88.0" text="Back" />
-      <Button id="startBtn" fx:id="startBtn" layoutX="480.0" layoutY="451.0" mnemonicParsing="false" onAction="#startBtnHandler" prefHeight="27.0" prefWidth="88.0" text="Start" />
       <Label layoutX="480.0" layoutY="150.0" prefHeight="30.0" prefWidth="90.0" style="-fx-alignment: center; -fx-background-color: black;" text="Next" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
