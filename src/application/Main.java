@@ -74,7 +74,7 @@ public class Main extends Application {
 		try {
 			//Parent kok = FXMLLoader.load(getClass().getResource("Applicaiton.fxml"));
 			FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(getClass().getResource("Applicaiton.fxml"));
+	        loader.setLocation(getClass().getResource("MainMenu.fxml"));
 	        Parent kok = loader.load();
 //			soundManager = new SoundManager();
 //			soundManager.autoPlay("menu");
@@ -310,31 +310,6 @@ public class Main extends Application {
 		}
 	}
 	
-	// Mesh board builder
-//	private Pane buildBoard() {
-//		game_board_pane = new Pane();
-//		game_board_pane.setLayoutX(Config.INNER_PANE_ALIGNMENT_X);
-//		game_board_pane.setLayoutY(Config.INNER_PANE_ALIGNMENT_Y);
-//
-//		for (int i = 0; i <= Config.ROW; i++) {
-//			if (i <= Config.COLUMN) {
-//				game_board_pane.getChildren().add(new Line(i * Config.RECTANGLE_EDGE, 0, i * Config.RECTANGLE_EDGE, Config.INNER_PANE_HEIGHT));
-//			}
-//			game_board_pane.getChildren().add(new Line(0, i * Config.RECTANGLE_EDGE, Config.INNER_PANE_WIDTH, i * Config.RECTANGLE_EDGE));
-//		}
-//
-//		outerPane = new Pane();
-//		outerPane.setLayoutX(Config.OUTER_PANE_ALIGNMENT_X);
-//		outerPane.setLayoutY(Config.OUTER_PANE_ALIGNMENT_Y);
-//		outerPane.setBorder(new Border(
-//		new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
-//		outerPane.minHeight(650);
-//		outerPane.minWidth(650);
-//		outerPane.getChildren().add(game_board_pane);
-//
-//		return outerPane;
-//
-//	}
 	
 	//////////////////// Buttons and Labels Configurations /////////////////////////////
 	public void configureButtons() {

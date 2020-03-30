@@ -1,9 +1,12 @@
 package application;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -29,8 +33,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-public class GameController {
+public class GameController implements Initializable{
 	// Main components
 		private Group root;
 		private ObservableList<Node> list;
@@ -76,7 +81,6 @@ public class GameController {
 		
 		@FXML
 		public void keyHandler(KeyEvent e) {
-			System.out.println("asdasd");
 			if (!isPaused &&!tetrimino.isDropped) {
 				if (e.getCode() == KeyCode.RIGHT) {
 					tetrimino.moveRight();
@@ -97,12 +101,12 @@ public class GameController {
 		}
 
 		@FXML
-		public void startBtn(ActionEvent e) {
+		public void startBtnHandler(ActionEvent e) {
 			startGame();
 		}
 		
 		@FXML
-		public void pauseBtn(ActionEvent e) {
+		public void pauseBtnHandler(ActionEvent e) {
 			if (!isPaused) {
 				pause();
 				pauseBtn.setText("Resume");
@@ -113,7 +117,7 @@ public class GameController {
 		}
 		
 		@FXML
-		public void restartBtn(ActionEvent e) {
+		public void restartBtnHandler(ActionEvent e) {
 			resetGame();
 			restartGame();
 		}
@@ -224,12 +228,11 @@ public class GameController {
 		}
 		
 		public void resetBoard() {
-			game_board_pane.getChildren().removeAll(tetrimino.getAllRectangles()); // the last tetromino that did not add to board
+			game_board_pane.getChildren().clear(); // the last tetromino that did not add to board
 			                                                                 // info: this matrix not for displaying components, just for way too easy reach
 			for (int i = 0; i < Config.ROW; i++) {
 				for (int j = 0; j < Config.COLUMN; j++) {
 					if (board[i][j] != null) {
-						game_board_pane.getChildren().remove(board[i][j]);
 						board[i][j] = null;
 					}
 				}
@@ -242,24 +245,26 @@ public class GameController {
 			soundManager.stopAll();
 			//soundManager.playAfterThis("gameOver", "inGame");
 			soundManager.play("gameOver");
-			
-			pauseBtn.setDisable(true);;
 			gameOverLabel.setVisible(true);
+			FadeTransition ft = new FadeTransition(Duration.millis(2000), gameOverLabel);
+			ft.setFromValue(0);
+			ft.setToValue(1);
+			ft.play();
+			pauseBtn.setDisable(true);
+			
 			overScoreLabel.setVisible(true);
-			overScoreLabel.setText("Score :"+game.getScore());
+			overScoreLabel.setText(""+game.getScore());
 			restartBtn.setVisible(true);
-			//outerPane.setOpacity(0.5);
+			game_board_pane.setOpacity(0.5);
 		}
 		
 		public synchronized void startGame() {
 			// GUI configurations //////////////
-			//outerPane.setOpacity(1);
-			//selectLevelTextLabel.setVisible(false);
-			//levelSelector.setVisible(false);
-			//gameOverLabel.setVisible(false);
-			//overScoreLabel.setVisible(false);
+			gameOverLabel.setVisible(false);
+			overScoreLabel.setVisible(false);
 			startBtn.setDisable(true);
 			pauseBtn.setDisable(false);
+			restartBtn.setVisible(false);
 			soundManager.stop("menu");
 			soundManager.stop("gameOver");
 			soundManager.stop("start");
@@ -282,13 +287,13 @@ public class GameController {
 			gameOverLabel.setVisible(false);
 			overScoreLabel.setVisible(false);
 			restartBtn.setVisible(false);
-			//outerPane.setOpacity(1);
+			game_board_pane.setOpacity(1);
 			soundManager.stop("gameOver");
 			soundManager.autoPlayAfterThis("restart", "inGame");
 			//////////////////////////////////////
 			game = new Game(tetrimino); 
 			game.setLevel(selectedLevel); // set level that selected from choice box
-			levelLabel.setText("level "+ selectedLevel); // initial level text
+			levelLabel.setText(""+ selectedLevel); // initial level text
 			addTetrimino(); // adds tetrimino to GUI
 			fall = new Timer(); // Move down thread configuration
 			task = createGameLoop();
@@ -298,7 +303,7 @@ public class GameController {
 		
 		// deletes all rectangles from board and deletes game object
 		public  void resetGame() {
-			scoreLabel.setText("Score: 0");
+			scoreLabel.setText("0");
 			resetBoard();
 			game = null;
 		}
@@ -317,12 +322,19 @@ public class GameController {
 				soundManager.play("panic");
 			}
 			if(game.update()) {
-				scoreLabel.setText("Score: "+game.getScore());
-				levelLabel.setText("Level "+game.getLevel());
-				lineLabel.setText("Line "+game.getLineCounter());
+				System.out.println("asdas"+game.getLevel());
+				scoreLabel.setText(""+game.getScore());
+				levelLabel.setText(""+game.getLevel());
+				lineLabel.setText(""+game.getLineCounter());
 				pause();
 				resume();
 			}
+		}
+
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			// TODO Auto-generated method stub
+			startGame();
 		}
 			
 }
