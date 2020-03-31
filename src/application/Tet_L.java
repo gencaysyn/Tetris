@@ -13,4 +13,7 @@ public class Tet_L extends Tetrimino{
 		setImage("L.png");
 	}
 	
+	public Tet_L getInstanceOfObject() {
+		return new Tet_L(mat);
+	}
 }

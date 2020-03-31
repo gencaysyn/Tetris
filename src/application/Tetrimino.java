@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-public class Tetrimino extends Rectangle {
+public abstract class Tetrimino extends Rectangle implements Cloneable{
 	protected int position = 0; // stores position information of tetrimino each tetrimino has 4 different position except tetrimino "O"
 	protected TetLocation loc; // stores tetriminos location
 	protected TetLocation instanceLoc; // location for showing next tetrimino panel
@@ -41,17 +41,16 @@ public class Tetrimino extends Rectangle {
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		setStrokeColorAll(Color.web("#dcdde1"));
 	}
-
-	public Tetrimino(TetLocation instanceLoc) {
+	
+	public Tetrimino() {
 		A = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		setStrokeColorAll(Color.web("#dcdde1"));
-		loc = instanceLoc;
-		setUILocation();
-		setImage("S.png");
 	}
+	
+	public abstract Tetrimino getInstanceOfObject();
 	
 	public Rectangle getA() {
 		return A;

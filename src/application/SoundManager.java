@@ -1,29 +1,35 @@
 package application;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class SoundManager {
-	private HashMap<String, Sound> medias;
+	private HashMap<String, Sound> musics;
+	private HashMap<String, AudioClip> effects;
 	private static final String path = "/sounds/";
 
 	public SoundManager() {
-		medias = new HashMap<String, Sound>();
-		medias.put("menu", new Sound("menu.mp3"));
-		medias.put("drop", new Sound("drop.wav"));
-		medias.put("tetris", new Sound("tetris.wav"));
-		medias.put("lineClean", new Sound("lineClean.wav"));
-		medias.put("gameOver", new Sound("gameOver.wav"));
-		medias.put("start", new Sound("start.wav"));
-		medias.put("inGame", new Sound("inGame.mp3"));
-		medias.put("restart", new Sound("restart.wav"));
-		medias.put("panic", new Sound("panic.wav"));
+		musics = new HashMap<String, Sound>();
+		musics.put("menu", new Sound("menu.wav"));
+		musics.put("gameOver", new Sound("gameOver.wav"));
+		musics.put("inGame", new Sound("inGame.mp3"));
+		//musics.put("start", new Sound("start.wav"));
+		//musics.put("restart", new Sound("restart.wav"));
+		//musics.put("panic", new Sound("panic.wav"));
+		
+		effects = new HashMap<>();
+		effects.put("drop", new AudioClip(getClass().getResource("/sounds/drop.wav").toString()));
+		effects.put("tetris", new AudioClip(getClass().getResource("/sounds/tetris.wav").toString()));
+		effects.put("lineClean", new AudioClip(getClass().getResource("/sounds/lineClean.wav").toString()));
+		effects.put("select", new AudioClip(getClass().getResource("/sounds/select.mp3").toString()));
 	}
 	
 	private class Sound {
@@ -43,8 +49,6 @@ public class SoundManager {
 			
 			if(name.equals("menu.mp3") || name.equals("inGame.mp3"))
 				mediaPlayer.setVolume(0.1);
-			if(name.equals("drop.wav"))
-				mediaPlayer.setVolume(0.5);
 				
 		}
 		
@@ -81,32 +85,32 @@ public class SoundManager {
 	}
 
 	public void play(String soundName) {
-		medias.get(soundName).play();
+		musics.get(soundName).play();
 	}
 
 	public void stop(String soundName) {
-		medias.get(soundName).stop();
+		musics.get(soundName).stop();
 	}
 	
 	public void autoPlay(String soundName) {
-		medias.get(soundName).autoPlay();
+		musics.get(soundName).autoPlay();
 	}
 	
 	public void playAfterThis(String first, String second) {
-		medias.get(first).getMediaPlayer().setOnEndOfMedia(() -> {
-			medias.get(second).getMediaPlayer().play();
+		musics.get(first).getMediaPlayer().setOnEndOfMedia(() -> {
+			musics.get(second).getMediaPlayer().play();
 		});
 	}
 	
 	public void autoPlayAfterThis(String first, String second) {
-		medias.get(first).play();
-		medias.get(first).getMediaPlayer().setOnEndOfMedia(() -> {
-			medias.get(second).autoPlay();
+		musics.get(first).play();
+		musics.get(first).getMediaPlayer().setOnEndOfMedia(() -> {
+			musics.get(second).autoPlay();
 		});
 	}
 	
 	public void stopAll() {
-		Iterator<Entry<String, Sound>> it = medias.entrySet().iterator();	
+		Iterator<Entry<String, Sound>> it = musics.entrySet().iterator();	
 		while(it.hasNext()) {
 			Entry<String, Sound> pair = it.next();
 			Sound sound = (Sound) pair.getValue();
@@ -115,11 +119,11 @@ public class SoundManager {
 	}
 	
 	public void mute(String name) {
-		medias.get(name).getMediaPlayer().setVolume(0);
+		musics.get(name).getMediaPlayer().setVolume(0);
 	}
 	
 	public void pauseAll() {
-		Iterator<Entry<String, Sound>> it = medias.entrySet().iterator();	
+		Iterator<Entry<String, Sound>> it = musics.entrySet().iterator();	
 		while(it.hasNext()) {
 			Entry<String, Sound> pair = it.next();
 			Sound sound = (Sound) pair.getValue();
@@ -128,16 +132,22 @@ public class SoundManager {
 	}
 	
 	public void pause(String name) {
-		medias.get(name).pause();
+		musics.get(name).pause();
 	}
 	
 	public void playAll() {
-		Iterator<Entry<String, Sound>> it = medias.entrySet().iterator();	
+		Iterator<Entry<String, Sound>> it = musics.entrySet().iterator();	
 		while(it.hasNext()) {
 			Entry<String, Sound> pair = it.next();
 			Sound sound = (Sound) pair.getValue();
 			sound.play();
 		}
+	}
+	
+	public void playEffect(String name) {
+		if(name.equals("lineClean"))
+			effects.get(name).play(0.2);
+		else effects.get(name).play();
 	}
 	
 }

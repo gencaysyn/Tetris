@@ -16,4 +16,5 @@ public class Config {
 	public static final int INNER_PANE_ALIGNMENT_Y = 10;
 	public static final int OUTER_PANE_ALIGNMENT_X = 50;
 	public static final int OUTER_PANE_ALIGNMENT_Y = 50;
+	public static final SoundManager soundManager = new SoundManager();
 }

@@ -19,4 +19,7 @@ public class Tet_O extends Tetrimino{
 		return false;
 	}
 
+	public Tet_O getInstanceOfObject() {
+		return new Tet_O(mat);
+	}
 }
