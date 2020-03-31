@@ -89,6 +89,7 @@ public class GameController implements Initializable {
 
 	@FXML
 	public void pauseBtnHandler(ActionEvent e) {
+		soundManager.playEffect("select");
 		if (!isPaused) {
 			pause();
 			soundManager.pause("inGame");
@@ -102,12 +103,14 @@ public class GameController implements Initializable {
 
 	@FXML
 	public void restartBtnHandler(ActionEvent e) {
+		soundManager.playEffect("select");
 		resetGame();
 		restartGame();
 	}
 
 	@FXML
 	public void backBtnHandler(ActionEvent e) {
+		soundManager.playEffect("select");
 		pause();
 		soundManager.stop("inGame");
 		try {
@@ -288,7 +291,6 @@ public class GameController implements Initializable {
 		restartBtn.setVisible(false);
 		soundManager.stop("menu");
 		soundManager.stop("gameOver");
-		soundManager.stop("start");
 		soundManager.autoPlay("inGame");
 		// soundManager.mute("inGame");
 		//////////////////////////////////////
@@ -315,7 +317,7 @@ public class GameController implements Initializable {
 		gameBoardAnim.setToValue(1);
 		gameBoardAnim.play();
 		soundManager.stop("gameOver");
-		soundManager.autoPlayAfterThis("restart", "inGame");
+		soundManager.autoPlay("inGame");
 		//////////////////////////////////////
 		game = new Game(tetrimino, selectedLevel); // set level that selected from choice box
 		levelLabel.setText("" + selectedLevel); // initial level text
@@ -348,7 +350,7 @@ public class GameController implements Initializable {
 		scoreLabel.setText("" + game.getScore());
 		lineLabel.setText("" + game.getLineCounter());
 		if (game.isPanic()) {
-			soundManager.play("panic");
+//			soundManager.play("panic");
 		}
 		if (game.update()) {
 			levelLabel.setText("" + game.getLevel());

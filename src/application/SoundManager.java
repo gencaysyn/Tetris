@@ -18,17 +18,18 @@ public class SoundManager {
 
 	public SoundManager() {
 		musics = new HashMap<String, Sound>();
-		musics.put("menu", new Sound("menu.mp3"));
+		musics.put("menu", new Sound("menu.wav"));
 		musics.put("gameOver", new Sound("gameOver.wav"));
-		musics.put("start", new Sound("start.wav"));
 		musics.put("inGame", new Sound("inGame.mp3"));
-		musics.put("restart", new Sound("restart.wav"));
-		musics.put("panic", new Sound("panic.wav"));
+		//musics.put("start", new Sound("start.wav"));
+		//musics.put("restart", new Sound("restart.wav"));
+		//musics.put("panic", new Sound("panic.wav"));
 		
 		effects = new HashMap<>();
 		effects.put("drop", new AudioClip(getClass().getResource("/sounds/drop.wav").toString()));
 		effects.put("tetris", new AudioClip(getClass().getResource("/sounds/tetris.wav").toString()));
 		effects.put("lineClean", new AudioClip(getClass().getResource("/sounds/lineClean.wav").toString()));
+		effects.put("select", new AudioClip(getClass().getResource("/sounds/select.wav").toString()));
 	}
 	
 	private class Sound {

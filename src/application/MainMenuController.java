@@ -36,6 +36,7 @@ public class MainMenuController implements Initializable{
 
 	@FXML
 	private void mainStartBtnHandler(ActionEvent e)throws IOException {
+		Config.soundManager.playEffect("select");
 		Config.soundManager.stop("menu");
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Applicaiton.fxml"));
 		Parent gameParent = (Parent) loader.load();
@@ -57,6 +58,7 @@ public class MainMenuController implements Initializable{
 	
 	@FXML
 	private void quitBtnHandler(ActionEvent e) {
+		Config.soundManager.playEffect("select");
 		Stage stage = (Stage) quitBtn.getScene().getWindow();
 	    stage.close();
 	}
