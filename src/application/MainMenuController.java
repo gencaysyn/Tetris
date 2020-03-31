@@ -15,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class MainMenuController implements Initializable{
@@ -29,13 +31,12 @@ public class MainMenuController implements Initializable{
 	ObservableList<String> levels = FXCollections.observableArrayList(l+"00",l+"01",l+"02",l+"03",l+"04",l+"05",l+"06",l+"07",l+"08",l+"09",l+"10");
 	@FXML
 	private ChoiceBox<String> levelSelector;
-	
-//	public MainMenuController(AppModel model) {
-//		this.model = model;
-//	}
-	
+	@FXML 
+	private ImageView img;
+
 	@FXML
 	private void mainStartBtnHandler(ActionEvent e)throws IOException {
+		Config.soundManager.stop("menu");
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Applicaiton.fxml"));
 		Parent gameParent = (Parent) loader.load();
 		GameController gc = loader.getController();
@@ -61,6 +62,8 @@ public class MainMenuController implements Initializable{
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		img.setImage(new Image(getClass().getResource("/images/background.jpg").toString()));
+		Config.soundManager.autoPlay("menu");
 		levelSelector.setValue("level 00");
 		levelSelector.setItems(levels);
 		

@@ -12,5 +12,9 @@ public class Tet_S extends Tetrimino{
 		setUILocation();
 		setImage("S.png");
 	}
+	
+	public Tet_S getInstanceOfObject() {
+		return new Tet_S(mat);
+	}
 
 }
