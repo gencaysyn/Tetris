@@ -29,7 +29,7 @@ public class SoundManager {
 		effects.put("drop", new AudioClip(getClass().getResource("/sounds/drop.wav").toString()));
 		effects.put("tetris", new AudioClip(getClass().getResource("/sounds/tetris.wav").toString()));
 		effects.put("lineClean", new AudioClip(getClass().getResource("/sounds/lineClean.wav").toString()));
-		effects.put("select", new AudioClip(getClass().getResource("/sounds/select.wav").toString()));
+		effects.put("select", new AudioClip(getClass().getResource("/sounds/select.mp3").toString()));
 	}
 	
 	private class Sound {
@@ -49,8 +49,6 @@ public class SoundManager {
 			
 			if(name.equals("menu.mp3") || name.equals("inGame.mp3"))
 				mediaPlayer.setVolume(0.1);
-			if(name.equals("drop.wav"))
-				mediaPlayer.setVolume(0.5);
 				
 		}
 		
@@ -147,7 +145,9 @@ public class SoundManager {
 	}
 	
 	public void playEffect(String name) {
-		effects.get(name).play();
+		if(name.equals("lineClean"))
+			effects.get(name).play(0.2);
+		else effects.get(name).play();
 	}
 	
 }
