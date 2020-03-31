@@ -96,8 +96,8 @@ public class GameController implements Initializable{
 				pause();
 				pauseBtn.setText("Resume");
 			} else {
-				soundManager.play("inGame");
 				resume();
+				soundManager.play("inGame");
 				pauseBtn.setText("Pause");
 			}
 		}
@@ -121,12 +121,13 @@ public class GameController implements Initializable{
 										dropTetrimino();
 										checkLines();
 									}
+									updateGame();
 									addNextTetrimino();
 									showNextTetrimino();
 									if (!game.isAvaible()) {
 										finishGame();
 									}
-									updateGame();
+									
 								}
 								taskRunning = false;
 							}else {
@@ -259,6 +260,7 @@ public class GameController implements Initializable{
 		}
 		
 		public synchronized void startGame(int selectedLevel) {
+			this.selectedLevel = selectedLevel;
 			// GUI configurations //////////////
 			gameOverLabel.setVisible(false);
 			overScoreLabel.setVisible(false);
@@ -270,12 +272,11 @@ public class GameController implements Initializable{
 			soundManager.autoPlay("inGame");
 			//soundManager.mute("inGame");
 			//////////////////////////////////////
-			System.out.println("noluyo hamuða "+selectedLevel);
 			game = new Game(tetrimino,selectedLevel); // set level that selected from choice box
-			System.out.println("Seçilmiþ sevie"+game.getLevel());
 			levelLabel.setText(""+ selectedLevel); // initial level text
 			scoreLabel.setText("0");
-			addFirstTetrimino();; // adds tetrimino to GUI
+			lineLabel.setText("0");
+			addFirstTetrimino(); // adds tetrimino to GUI
 			showNextTetrimino();
 			fall = new Timer(); // Move down thread configuration
 			task = createGameLoop();
@@ -298,6 +299,8 @@ public class GameController implements Initializable{
 			//////////////////////////////////////
 			game = new Game(tetrimino,selectedLevel); // set level that selected from choice box
 			levelLabel.setText(""+ selectedLevel); // initial level text
+			lineLabel.setText("0");
+			scoreLabel.setText("0");
 			addFirstTetrimino(); // adds tetrimino to GUI
 			fall = new Timer(); // Move down thread configuration
 			task = createGameLoop();
@@ -322,21 +325,16 @@ public class GameController implements Initializable{
 
 		// Updates variables that used for game
 		public synchronized void updateGame() {
+			scoreLabel.setText(""+game.getScore());
+			lineLabel.setText(""+game.getLineCounter());
 			if(game.isPanic()) {
 				soundManager.play("panic");
 			}
 			if(game.update()) {
-				scoreLabel.setText(""+game.getScore());
 				levelLabel.setText(""+game.getLevel());
-				lineLabel.setText(""+game.getLineCounter());
 				pause();
 				resume();
 			}
-		}
-		
-		public void selectLevel(int level) {
-			System.out.println("ananan "+level);
-			selectedLevel = level;
 		}
 		
 		@Override 

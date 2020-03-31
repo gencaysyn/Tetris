@@ -27,10 +27,7 @@ public class Tetrimino extends Rectangle {
 		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
-		A.setStroke(Color.WHITE);
-		B.setStroke(Color.WHITE);
-		C.setStroke(Color.WHITE);
-		D.setStroke(Color.WHITE);;
+		setStrokeColorAll(Color.web("#dcdde1"));
 	}
 
 	// Constructor to manage variables easily in child classes
@@ -42,10 +39,7 @@ public class Tetrimino extends Rectangle {
 		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
-		A.setStroke(Color.WHITE);
-		B.setStroke(Color.WHITE);
-		C.setStroke(Color.WHITE);
-		D.setStroke(Color.WHITE);
+		setStrokeColorAll(Color.web("#dcdde1"));
 	}
 
 	public Tetrimino(TetLocation instanceLoc) {
@@ -53,6 +47,7 @@ public class Tetrimino extends Rectangle {
 		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
+		setStrokeColorAll(Color.web("#dcdde1"));
 		loc = instanceLoc;
 		setUILocation();
 		setImage("S.png");
@@ -226,12 +221,12 @@ public class Tetrimino extends Rectangle {
 		loc.setDy(loc.getDy() + newLoc.getDy());
 		setUILocation();
 	}
-
-	public void setColor(Color color) {
-		A.setFill(color);
-		B.setFill(color);
-		C.setFill(color);
-		D.setFill(color);
+	
+	public void setStrokeColorAll(Color c) {
+		A.setStroke(c);
+		B.setStroke(c);
+		C.setStroke(c);
+		D.setStroke(c);
 	}
 	
 	public ObservableList<Node> getAllRectangles(){

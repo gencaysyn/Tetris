@@ -1,5 +1,13 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-.dark-blue {
+
+.labelDefault{
+	-fx-border-color: #353b48;
+	-fx-background-color: black;
+	-fx-text-alignment: center;
+	-fx-alignment:baseline-center;
+}
+
+.buttonDefault {
     -fx-background-color: 
         #090a0c,
         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
@@ -11,10 +19,58 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
     -fx-font-family: "Arial";
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-padding: 10 20 10 20;
 }
-
-.dark-blue Text {
+.buttonDefault Text {
     -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
 }
+.buttonDefault:pressed {
+    -fx-background-color:         
+		#090a0c,
+	    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+	    linear-gradient(#20262b, #191d22),
+	    radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.4), rgba(255,255,255,0));
+}
+
+.buttonDefault:hover {
+    -fx-background-color:         
+		#090a0c,
+	    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+	    linear-gradient(#20262b, #191d22),
+	    radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.7), rgba(255,255,255,0));
+    -fx-background-insets:  0,1,1,0;
+    -fx-background-radius: 4,3,2,4;
+    -fx-padding: 10 20 10 20;
+    -fx-alignment: CENTER;
+}
+
+.choice-box {
+      -fx-background-color: 
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+  -fx-mark-color: 
+  		#090a0c,
+	    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+	    linear-gradient(#20262b, #191d22),
+	    radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.4), rgba(255,255,255,0));
+}
+
+.choice-box > .label { -fx-text-fill: white; }
+.choice-box .context-menu { 
+	-fx-background-color:         #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0)); 
+        }
+
+.choice-box .menu-item:focused {
+	-fx-background-color:         #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.2), rgba(255,255,255,0));
+}
+.choice-box .menu-item > .label { -fx-text-fill: white;}
+.choice-box .menu-item:focused > .label { -fx-text-fill: white;}

@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,8 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 
 public class MainMenuController implements Initializable{
 //	private final AppModel model ;
@@ -42,7 +39,6 @@ public class MainMenuController implements Initializable{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Applicaiton.fxml"));
 		Parent gameParent = (Parent) loader.load();
 		GameController gc = loader.getController();
-		System.out.println("ASDASDASDAS"+levelSelector.getSelectionModel().getSelectedIndex());
 		gc.startGame(levelSelector.getSelectionModel().getSelectedIndex());
 		
 		Scene gameScene = new Scene(gameParent);
@@ -65,9 +61,8 @@ public class MainMenuController implements Initializable{
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		levelSelector.setValue("level 03");
+		levelSelector.setValue("level 00");
 		levelSelector.setItems(levels);
-		
 		
 	}
 
