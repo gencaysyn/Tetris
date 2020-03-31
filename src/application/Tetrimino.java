@@ -10,41 +10,49 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-public abstract class Tetrimino extends Rectangle {
+public class Tetrimino extends Rectangle {
 	protected int position = 0; // stores position information of tetrimino each tetrimino has 4 different position except tetrimino "O"
 	protected TetLocation loc; // stores tetriminos location
+	protected TetLocation instanceLoc; // location for showing next tetrimino panel
 	protected Rectangle A, B, C, D; // each square of tetrimino
 	protected boolean[][] mat; // matrix to manage collisions (drops,borders, etc.)
 	protected TetLocation[] posLoc; // stores tetriminos positions locations to change position one to other
 	protected boolean isDropped = false; // to make it trade safe if you press long to down button it trying to drop two times
 
-	// Constructor tetrimino GUI config
-	public Tetrimino(boolean[][] mat) {
+			// Constructor tetrimino GUI config
+	public Tetrimino(boolean[][] mat,TetLocation instanceLoc) {
 		this.mat = mat;
+		this.instanceLoc = instanceLoc;
 		A = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
-		A.setStroke(Color.BLACK);
-		B.setStroke(Color.BLACK);
-		C.setStroke(Color.BLACK);
-		D.setStroke(Color.BLACK);
+		setStrokeColorAll(Color.web("#dcdde1"));
 	}
 
 	// Constructor to manage variables easily in child classes
-	public Tetrimino(boolean[][] mat, TetLocation[] posLoc) {
+	public Tetrimino(boolean[][] mat, TetLocation[] posLoc, TetLocation instanceLoc) {
+		this.instanceLoc = instanceLoc;
 		this.mat = mat;
 		this.posLoc = posLoc;
 		A = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
 		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
-		A.setStroke(Color.BLACK);
-		B.setStroke(Color.BLACK);
-		C.setStroke(Color.BLACK);
-		D.setStroke(Color.BLACK);
+		setStrokeColorAll(Color.web("#dcdde1"));
 	}
 
+	public Tetrimino(TetLocation instanceLoc) {
+		A = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
+		B = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
+		C = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
+		D = new Rectangle(Config.RECTANGLE_EDGE, Config.RECTANGLE_EDGE);
+		setStrokeColorAll(Color.web("#dcdde1"));
+		loc = instanceLoc;
+		setUILocation();
+		setImage("S.png");
+	}
+	
 	public Rectangle getA() {
 		return A;
 	}
@@ -213,12 +221,12 @@ public abstract class Tetrimino extends Rectangle {
 		loc.setDy(loc.getDy() + newLoc.getDy());
 		setUILocation();
 	}
-
-	public void setColor(Color color) {
-		A.setFill(color);
-		B.setFill(color);
-		C.setFill(color);
-		D.setFill(color);
+	
+	public void setStrokeColorAll(Color c) {
+		A.setStroke(c);
+		B.setStroke(c);
+		C.setStroke(c);
+		D.setStroke(c);
 	}
 	
 	public ObservableList<Node> getAllRectangles(){
@@ -244,5 +252,6 @@ public abstract class Tetrimino extends Rectangle {
 		}
 
 	}
+	
 
 }
