@@ -26,7 +26,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Button id="pauseBtn" fx:id="pauseBtn" layoutX="481.0" layoutY="91.0" mnemonicParsing="false" onAction="#pauseBtnHandler" prefHeight="27.0" prefWidth="88.0" styleClass="buttonDefault" text="Pause" />
+      <Button id="pauseBtn" fx:id="pauseBtn" layoutX="476.0" layoutY="90.0" mnemonicParsing="false" onAction="#pauseBtnHandler" prefHeight="36.0" prefWidth="98.0" styleClass="buttonDefault" text="Pause" />
       <Button id="backBtn" layoutX="480.0" layoutY="661.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="88.0" styleClass="buttonDefault" text="Back" />
       <Label layoutX="480.0" layoutY="150.0" prefHeight="30.0" prefWidth="90.0" styleClass="labelDefault" text="Next" textAlignment="CENTER" textFill="WHITE">
          <font>

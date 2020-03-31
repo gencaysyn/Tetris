@@ -93,11 +93,11 @@ public class GameController implements Initializable{
 		public void pauseBtnHandler(ActionEvent e) {
 			if (!isPaused) {
 				soundManager.pause("inGame");
-				pause();
 				pauseBtn.setText("Resume");
+				pause();
 			} else {
 				resume();
-				soundManager.play("inGame");
+				soundManager.autoPlay("inGame");
 				pauseBtn.setText("Pause");
 			}
 		}
