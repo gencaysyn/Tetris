@@ -89,6 +89,7 @@ public class GameController implements Initializable {
 
 	@FXML
 	public void pauseBtnHandler(ActionEvent e) {
+		System.out.println("askjdf");
 		soundManager.playEffect("select");
 		if (!isPaused) {
 			pause();
