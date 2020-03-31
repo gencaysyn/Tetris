@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class SoundManager {
@@ -72,7 +73,8 @@ public class SoundManager {
 		}
 		
 		public void pause() {
-			mediaPlayer.pause();
+			if(mediaPlayer.getStatus() == Status.PLAYING)
+				mediaPlayer.pause();
 		}
 		
 		
