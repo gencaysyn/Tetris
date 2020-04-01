@@ -11,8 +11,11 @@ Tetris Game with javafx
 ## Guide
 
 ### Controls
+
+
 ![left](pictures/icons/left.png)  Move left 
 ![right](pictures/icons/right.png)  Move right
 ![up](pictures/icons/up.png)  Rotate right
 ![down](pictures/icons/down.png)  Move down
+
 
