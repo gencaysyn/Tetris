@@ -8,7 +8,9 @@ Tetris Game with javafx
 ### Game Over
 ![Game Over](pictures/screen_shoots/SS_GameOver.png)
 
-## Guide
+## Requirements
+- Java 
+- Javafx 
 
 ### Controls
 
