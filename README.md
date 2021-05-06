@@ -19,5 +19,3 @@ Tetris Game with javafx
 ![right](pictures/icons/right.png)  Move right
 ![up](pictures/icons/up.png)  Rotate right
 ![down](pictures/icons/down.png)  Move down
-
-
